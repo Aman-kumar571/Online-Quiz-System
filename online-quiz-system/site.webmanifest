@@ -1,0 +1,26 @@
+{
+    "name": "QuizPoint",
+    "short_name": "QuizPoint",
+    "description": "Practice quizzes for computer science students",
+    "start_url": "/online-quiz-system/",
+    "display": "standalone",
+    "background_color": "#fafaf8",
+    "theme_color": "#1a56db",
+    "icons": [
+        {
+            "src": "favicon-32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "favicon-180.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+# robots.txt for QuizPoint
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /sql/
+Disallow: /setup.php
+
+Sitemap: https://quizpoint.example/sitemap.xml

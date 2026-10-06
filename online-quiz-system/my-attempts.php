@@ -3,15 +3,16 @@
  * User's past quiz attempts.
  */
 
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/helpers.php';
+
+requireLogin();
 
 $pageTitle       = 'My Attempts';
 $pageDescription = 'View your quiz attempt history and scores.';
 $canonicalPath   = '/my-attempts.php';
-
-require __DIR__ . '/includes/header.php';
-requireLogin();
 
 $db = getDB();
 
@@ -26,6 +27,8 @@ $stmt = $db->prepare(
 );
 $stmt->execute([':uid' => currentUserId()]);
 $attempts = $stmt->fetchAll();
+
+require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container">
@@ -78,6 +81,11 @@ $attempts = $stmt->fetchAll();
             </table>
         </div>
     <?php endif; ?>
+
+    <div style="margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--color-border-light); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+        <p class="text-sm text-muted">Looking to manage your personal data or close your account?</p>
+        <a href="<?= e(BASE_URL) ?>/delete-account.php" class="btn btn-sm btn-outline" style="color: var(--color-error); border-color: var(--color-error);">Delete account</a>
+    </div>
 </div>
 
 <div style="padding-bottom: var(--space-12);"></div>

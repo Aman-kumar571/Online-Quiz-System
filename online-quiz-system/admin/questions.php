@@ -3,18 +3,16 @@
  * Admin: list and delete questions for a specific quiz.
  */
 
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
-$pageTitle     = 'Manage Questions';
-$canonicalPath = '/admin/questions.php';
-
-require __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDB();
 
-// If quiz_id is provided, show questions for that quiz
 $quizId = isset($_GET['quiz_id']) ? (int)$_GET['quiz_id'] : 0;
 
 // Handle delete
@@ -39,6 +37,11 @@ if ($quizId <= 0) {
          JOIN categories c ON q.category_id = c.category_id
          ORDER BY q.title'
     )->fetchAll();
+
+    $pageTitle     = 'Manage Questions';
+    $canonicalPath = '/admin/questions.php';
+
+    require __DIR__ . '/../includes/header.php';
     ?>
 
     <div class="container">
@@ -104,6 +107,11 @@ if (!$quiz) {
 $stmt = $db->prepare('SELECT * FROM questions WHERE quiz_id = :id ORDER BY question_id');
 $stmt->execute([':id' => $quizId]);
 $questions = $stmt->fetchAll();
+
+$pageTitle     = 'Questions: ' . $quiz['title'];
+$canonicalPath = '/admin/questions.php?quiz_id=' . $quizId;
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">

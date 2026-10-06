@@ -3,13 +3,12 @@
  * Admin: list and delete quizzes.
  */
 
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
-$pageTitle     = 'Manage Quizzes';
-$canonicalPath = '/admin/quizzes.php';
-
-require __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDB();
@@ -37,6 +36,11 @@ $quizzes = $db->query(
      JOIN categories c ON q.category_id = c.category_id
      ORDER BY q.created_at DESC'
 )->fetchAll();
+
+$pageTitle     = 'Manage Quizzes';
+$canonicalPath = '/admin/quizzes.php';
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">

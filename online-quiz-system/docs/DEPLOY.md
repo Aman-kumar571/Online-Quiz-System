@@ -90,8 +90,8 @@ define('CONTACT_EMAIL', 'you@yourdomain.com');
 
 3. Upload the updated `config.php`.
 4. Visit `https://yourdomain.com/setup.php` in your browser to:
-   - Generate PNG favicon files
-   - Fix the admin account password hash
+   - Generate PNG favicon files if needed
+   - Create your administrator account with your chosen email and password (no default password is set)
 5. Verify the setup completed successfully.
 6. **Delete `setup.php` immediately after setup.** It should not remain on a production server.
 
@@ -116,7 +116,7 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 1. Update `robots.txt`: change the Sitemap URL to your actual domain.
 2. Update `sitemap.xml`: replace `https://quizpoint.example` with your actual domain in all URLs.
 3. Update `site.webmanifest`: change `start_url` to `/` (or your subfolder path).
-4. Update `.htaccess`: change the `ErrorDocument 404` path if you are not using a subfolder.
+4. Update `.htaccess`: update the `ErrorDocument 403`, `404`, and `500` paths if you are not using a subfolder.
 
 ## Step 8: Test the Deployment
 
@@ -125,33 +125,33 @@ Verify the following work correctly on the live site:
 - [ ] Home page loads with correct styling
 - [ ] Registration creates a new account
 - [ ] Login works with the new account
-- [ ] Login works with admin credentials (admin@quizsystem.local / Admin@1234)
-- [ ] Admin dashboard loads and shows stats
+- [ ] Login rate limiting triggers after multiple failed attempts
+- [ ] Login works with your created administrator credentials
+- [ ] Admin dashboard loads and shows real stats
 - [ ] Creating, editing, and deleting categories works
 - [ ] Creating, editing, and deleting quizzes works
 - [ ] Adding and editing questions works
 - [ ] Taking a quiz and submitting answers works
-- [ ] Score is calculated correctly
-- [ ] Result page shows the correct score
+- [ ] Server-side score is calculated accurately
+- [ ] Result page shows the correct score and is restricted to the owner
 - [ ] My Attempts page lists past attempts
+- [ ] Account deletion works and removes personal quiz history
 - [ ] Admin Results page shows all attempts
+- [ ] 403 page displays for unauthorized access to admin pages
 - [ ] 404 page shows for non-existent URLs
+- [ ] 500 page shows for server errors
 - [ ] Privacy Policy and Terms pages load
 - [ ] HTTPS redirect works
 - [ ] Favicon appears in browser tab
-- [ ] Normal users cannot access /admin/ pages
 - [ ] Mobile layout works at 360px width
 
-## Step 9: Change Default Admin Credentials
+## Step 9: Administrator Credential Management
 
-**This is critical for security.** After verifying the deployment:
-
-1. Log in as admin (admin@quizsystem.local / Admin@1234).
-2. The application does not currently have a password change feature in the UI, so update the password directly in the database:
+Because no default passwords exist, keep your administrator credentials safe. To change an administrator password later:
 
 ```sql
 UPDATE users SET password_hash = '$2y$10$YOUR_NEW_HASH', email = 'your-real-email@domain.com'
-WHERE email = 'admin@quizsystem.local';
+WHERE email = 'admin@yourdomain.com';
 ```
 
 Generate a new hash with: `php -r "echo password_hash('YourNewPassword', PASSWORD_DEFAULT);"`

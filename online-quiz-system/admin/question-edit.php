@@ -3,12 +3,12 @@
  * Admin: create or edit a question.
  */
 
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
-$canonicalPath = '/admin/question-edit.php';
-
-require __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDB();
@@ -25,7 +25,7 @@ if ($isEdit) {
     $question = $stmt->fetch();
     if (!$question) {
         setFlash('error', 'Question not found.');
-        redirect('/admin/questions.php?quiz_id=' . $quizId);
+        redirect('/admin/questions.php' . ($quizId > 0 ? '?quiz_id=' . $quizId : ''));
     }
     if ($quizId <= 0) {
         $quizId = (int)$question['quiz_id'];
@@ -114,6 +114,9 @@ $curB    = $_POST['option_b']      ?? ($question['option_b'] ?? '');
 $curC    = $_POST['option_c']      ?? ($question['option_c'] ?? '');
 $curD    = $_POST['option_d']      ?? ($question['option_d'] ?? '');
 $curCo   = $_POST['correct_option'] ?? ($question['correct_option'] ?? '');
+$canonicalPath = '/admin/question-edit.php?' . ($isEdit ? 'id=' . $editId . '&' : '') . 'quiz_id=' . $quizId;
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
@@ -133,7 +136,7 @@ $curCo   = $_POST['correct_option'] ?? ($question['correct_option'] ?? '');
     <?php endif; ?>
 
     <div class="card" style="max-width: 720px;">
-        <form method="post">
+        <form method="post" action="<?= e(BASE_URL) ?>/admin/question-edit.php?<?= $isEdit ? 'id=' . (int)$editId . '&' : '' ?>quiz_id=<?= (int)$quizId ?>">
             <?= csrfField() ?>
 
             <div class="form-group">

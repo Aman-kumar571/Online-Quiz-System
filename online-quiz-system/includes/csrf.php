@@ -19,7 +19,12 @@ function csrfField(): string
 
 function validateCsrfToken(): bool
 {
-    if (empty($_POST['csrf_token']) || empty($_SESSION['csrf_token'])) {
+    if (
+        empty($_POST['csrf_token']) ||
+        !is_string($_POST['csrf_token']) ||
+        empty($_SESSION['csrf_token']) ||
+        !is_string($_SESSION['csrf_token'])
+    ) {
         return false;
     }
     $valid = hash_equals($_SESSION['csrf_token'], $_POST['csrf_token']);

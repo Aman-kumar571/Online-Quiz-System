@@ -4,20 +4,18 @@
  * Creates a new user account with hashed password.
  */
 
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/helpers.php';
-
-$pageTitle       = 'Register';
-$pageDescription = 'Create a free ' . SITE_NAME . ' account to take quizzes and track your scores.';
-$canonicalPath   = '/register.php';
-
-require __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/csrf.php';
 
 if (isLoggedIn()) {
     redirect('/');
 }
 
 $errors = [];
+$db = getDB();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validateCsrfToken()) {
@@ -58,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Check for duplicate email
         if (empty($errors)) {
-            $db   = getDB();
             $stmt = $db->prepare('SELECT user_id FROM users WHERE email = :email LIMIT 1');
             $stmt->execute([':email' => $email]);
             if ($stmt->fetch()) {
@@ -83,6 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$pageTitle       = 'Register';
+$pageDescription = 'Create a free ' . SITE_NAME . ' account to take quizzes and track your scores.';
+$canonicalPath   = '/register.php';
+
+require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="auth-page">

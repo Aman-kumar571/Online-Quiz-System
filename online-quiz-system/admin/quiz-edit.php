@@ -3,12 +3,12 @@
  * Admin: create or edit a quiz.
  */
 
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
-$canonicalPath = '/admin/quiz-edit.php';
-
-require __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDB();
@@ -93,6 +93,9 @@ $currentTitle  = $_POST['title']       ?? ($quiz['title'] ?? '');
 $currentCat    = (int)($_POST['category_id'] ?? ($quiz['category_id'] ?? 0));
 $currentDesc   = $_POST['description'] ?? ($quiz['description'] ?? '');
 $currentStatus = $_POST['status']      ?? ($quiz['status'] ?? 'active');
+$canonicalPath = '/admin/quiz-edit.php' . ($isEdit ? '?id=' . $editId : '');
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
@@ -111,7 +114,7 @@ $currentStatus = $_POST['status']      ?? ($quiz['status'] ?? 'active');
     <?php endif; ?>
 
     <div class="card" style="max-width: 640px;">
-        <form method="post">
+        <form method="post" action="<?= e(BASE_URL) ?>/admin/quiz-edit.php<?= $isEdit ? '?id=' . (int)$editId : '' ?>">
             <?= csrfField() ?>
 
             <div class="form-group">

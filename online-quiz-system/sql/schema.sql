@@ -2,11 +2,6 @@
 -- Import this file into MySQL via phpMyAdmin or CLI:
 --   mysql -u root -p < schema.sql
 
-CREATE DATABASE IF NOT EXISTS quiz_system
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE quiz_system;
 
 -- Users table
 CREATE TABLE users (
@@ -70,4 +65,14 @@ CREATE TABLE results (
   INDEX idx_user (user_id),
   INDEX idx_quiz_result (quiz_id),
   INDEX idx_attempt_date (attempt_date)
+) ENGINE=InnoDB;
+
+-- Login rate limiting table
+CREATE TABLE IF NOT EXISTS login_attempts (
+  attempt_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  ip_address VARCHAR(45) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  attempt_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_ip_time (ip_address, attempt_time),
+  INDEX idx_email_time (email, attempt_time)
 ) ENGINE=InnoDB;

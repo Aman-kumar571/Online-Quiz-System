@@ -4,13 +4,11 @@
  * Only the result owner can view their result.
  */
 
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/helpers.php';
 
-$pageTitle     = 'Quiz Result';
-$canonicalPath = '/result.php';
-
-require __DIR__ . '/includes/header.php';
 requireLogin();
 
 $resultId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -40,6 +38,9 @@ $percentage = $result['total_questions'] > 0
 
 $pageTitle       = 'Result: ' . $result['quiz_title'];
 $pageDescription = 'You scored ' . $result['score'] . ' out of ' . $result['total_questions'] . '.';
+$canonicalPath   = '/result.php?id=' . $resultId;
+
+require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container page-section">

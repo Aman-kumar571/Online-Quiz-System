@@ -18,11 +18,7 @@ $db = getDB();
 // Validate quiz ID
 $quizId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($quizId <= 0) {
-    http_response_code(404);
-    $pageTitle = 'Quiz not found';
-    require __DIR__ . '/includes/header.php';
-    echo '<div class="container error-page"><div class="error-code">404</div><h1>Quiz not found</h1><p>The quiz you are looking for does not exist.</p><a href="' . e(BASE_URL) . '/quizzes.php" class="btn btn-primary">Browse quizzes</a></div>';
-    require __DIR__ . '/includes/footer.php';
+    require __DIR__ . '/404.php';
     exit;
 }
 
@@ -36,11 +32,7 @@ $stmt->execute([':id' => $quizId]);
 $quiz = $stmt->fetch();
 
 if (!$quiz) {
-    http_response_code(404);
-    $pageTitle = 'Quiz not found';
-    require __DIR__ . '/includes/header.php';
-    echo '<div class="container error-page"><div class="error-code">404</div><h1>Quiz not found</h1><p>This quiz is not available.</p><a href="' . e(BASE_URL) . '/quizzes.php" class="btn btn-primary">Browse quizzes</a></div>';
-    require __DIR__ . '/includes/footer.php';
+    require __DIR__ . '/404.php';
     exit;
 }
 

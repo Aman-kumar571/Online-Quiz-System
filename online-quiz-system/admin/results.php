@@ -3,13 +3,11 @@
  * Admin: view all quiz results.
  */
 
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
 
-$pageTitle     = 'All Results';
-$canonicalPath = '/admin/results.php';
-
-require __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDB();
@@ -44,6 +42,11 @@ $results = $stmt->fetchAll();
 
 // Get quizzes for filter dropdown
 $quizzes = $db->query('SELECT quiz_id, title FROM quizzes ORDER BY title')->fetchAll();
+
+$pageTitle     = 'All Results';
+$canonicalPath = '/admin/results.php' . ($filterQuizId > 0 ? '?quiz_id=' . $filterQuizId : '');
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
@@ -55,7 +58,7 @@ $quizzes = $db->query('SELECT quiz_id, title FROM quizzes ORDER BY title')->fetc
     <?php require __DIR__ . '/admin-nav.php'; ?>
 
     <!-- Filter -->
-    <form method="get" style="margin-bottom: var(--space-6); display: flex; gap: var(--space-3); align-items: flex-end; flex-wrap: wrap;">
+    <form method="get" action="<?= e(BASE_URL) ?>/admin/results.php" style="margin-bottom: var(--space-6); display: flex; gap: var(--space-3); align-items: flex-end; flex-wrap: wrap;">
         <div class="form-group" style="margin-bottom:0;">
             <label for="quiz_filter" class="text-sm">Filter by quiz</label>
             <select id="quiz_filter" name="quiz_id" class="form-control" style="min-width:240px;">
@@ -99,7 +102,7 @@ $quizzes = $db->query('SELECT quiz_id, title FROM quizzes ORDER BY title')->fetc
                             : 0;
                     ?>
                         <tr>
-                            <td><strong><?= e($r['user_name']) ?></strong></td>
+                            <td><?= e($r['user_name']) ?></td>
                             <td class="text-muted"><?= e($r['user_email']) ?></td>
                             <td><?= e($r['quiz_title']) ?></td>
                             <td><?= (int)$r['score'] ?>/<?= (int)$r['total_questions'] ?></td>

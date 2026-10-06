@@ -7,10 +7,10 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'quiz_system');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', '123');
 define('DB_CHARSET', 'utf8mb4');
 
-define('BASE_URL', 'http://localhost/online-quiz-system');
+define('BASE_URL', 'http://localhost:8000/online-quiz-system');
 
 define('SITE_NAME', 'QuizPoint');
 define('SITE_TAGLINE', 'Practice quizzes for computer science students');

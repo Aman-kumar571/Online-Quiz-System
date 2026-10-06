@@ -64,7 +64,7 @@ require __DIR__ . '/includes/header.php';
     </ul>
 
     <h2>9. Account Termination</h2>
-    <p>You may stop using the application at any time. You may request deletion of your account and associated data by contacting us at the email address listed below. We reserve the right to suspend or terminate your account if you violate these Terms, without prior notice.</p>
+    <p>You may stop using the application at any time. You can delete your account and associated data directly through the self-service account deletion page in your account, or by contacting us at the email address listed below. We reserve the right to suspend or terminate your account if you violate these Terms, without prior notice.</p>
 
     <h2>10. Changes to These Terms</h2>
     <p>We may modify these Terms at any time by posting the updated version on this page with a new "Last updated" date. Your continued use of the application after changes are posted constitutes your acceptance of the revised Terms. If you do not agree with the changes, you should stop using the application and request account deletion.</p>

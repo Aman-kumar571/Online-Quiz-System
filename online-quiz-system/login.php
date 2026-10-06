@@ -1,24 +1,22 @@
 <?php
 /**
  * User login page.
- * Validates credentials, regenerates session, redirects by role.
+ * Validates credentials, checks rate limits, regenerates session, redirects by role.
  */
 
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/helpers.php';
+require_once __DIR__ . '/includes/csrf.php';
 
-$pageTitle       = 'Log in';
-$pageDescription = 'Log in to your ' . SITE_NAME . ' account to take quizzes and track your progress.';
-$canonicalPath   = '/login.php';
-
-require __DIR__ . '/includes/header.php';
-
-// If already logged in, redirect
+// If already logged in, redirect immediately
 if (isLoggedIn()) {
     redirect('/');
 }
 
 $errors = [];
+$db = getDB();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!validateCsrfToken()) {
@@ -29,13 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($email === '' || $password === '') {
             $errors[] = 'Email and password are required.';
+        } elseif (isLoginRateLimited($email, $db)) {
+            $errors[] = 'Too many failed login attempts. Please wait 15 minutes before trying again.';
         } else {
-            $db   = getDB();
             $stmt = $db->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
             $stmt->execute([':email' => $email]);
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password_hash'])) {
+                clearLoginAttempts($email, $db);
                 loginUser($user);
 
                 if ($user['role'] === 'admin') {
@@ -44,11 +44,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     redirect('/');
                 }
             } else {
+                recordFailedLogin($email, $db);
                 $errors[] = 'Invalid email or password.';
             }
         }
     }
 }
+
+$pageTitle       = 'Log in';
+$pageDescription = 'Log in to your ' . SITE_NAME . ' account to take quizzes and track your progress.';
+$canonicalPath   = '/login.php';
+
+require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="auth-page">

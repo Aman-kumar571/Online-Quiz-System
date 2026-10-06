@@ -3,14 +3,11 @@
  * Admin dashboard: shows overview stats from the database.
  */
 
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
 
-$pageTitle       = 'Admin Dashboard';
-$pageDescription = 'Admin overview for ' . SITE_NAME;
-$canonicalPath   = '/admin/';
-
-require __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDB();
@@ -33,6 +30,12 @@ $recentAttempts = $db->query(
      ORDER BY r.attempt_date DESC
      LIMIT 10'
 )->fetchAll();
+
+$pageTitle       = 'Admin Dashboard';
+$pageDescription = 'Admin overview for ' . SITE_NAME;
+$canonicalPath   = '/admin/';
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">

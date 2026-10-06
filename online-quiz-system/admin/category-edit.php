@@ -3,12 +3,12 @@
  * Admin: create or edit a category.
  */
 
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
-$canonicalPath = '/admin/category-edit.php';
-
-require __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDB();
@@ -68,7 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$currentName = $_POST['category_name'] ?? ($category['category_name'] ?? '');
+$currentName   = $_POST['category_name'] ?? ($category['category_name'] ?? '');
+$canonicalPath = '/admin/category-edit.php' . ($isEdit ? '?id=' . $editId : '');
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
@@ -87,7 +90,7 @@ $currentName = $_POST['category_name'] ?? ($category['category_name'] ?? '');
     <?php endif; ?>
 
     <div class="card" style="max-width: 560px;">
-        <form method="post">
+        <form method="post" action="<?= e(BASE_URL) ?>/admin/category-edit.php<?= $isEdit ? '?id=' . (int)$editId : '' ?>">
             <?= csrfField() ?>
 
             <div class="form-group">

@@ -64,13 +64,13 @@ require __DIR__ . '/includes/header.php';
     </ul>
 
     <h2>6. Data Retention</h2>
-    <p>Your account data and quiz attempt history are retained for as long as your account exists. If you wish to have your data deleted, you may contact us at the email address below, and we will remove your account and all associated records within 30 days.</p>
+    <p>Your account data and quiz attempt history are retained for as long as your account exists. You can permanently delete your account and all associated quiz history at any time using the self-service account deletion page while logged in, or by contacting us at the email address below.</p>
 
     <h2>7. Your Rights</h2>
     <p>You have the right to:</p>
     <ul>
         <li><strong>Access your data</strong>: you can view your own quiz history at any time through the "My Attempts" page.</li>
-        <li><strong>Request deletion</strong>: you may request that we delete your account and all associated data by contacting us.</li>
+        <li><strong>Delete your data</strong>: you can permanently delete your account and all associated quiz attempt records directly through the application at any time, or by contacting us.</li>
         <li><strong>Correct your data</strong>: if any information about you is incorrect, contact us and we will correct it.</li>
     </ul>
 

@@ -1,13 +1,10 @@
 -- Seed data for Online Quiz System
 -- Run AFTER schema.sql
 
-USE quiz_system;
 
--- Admin account
--- Email: admin@quizsystem.local
--- Password: Admin@1234 (change immediately after first login)
-INSERT INTO users (name, email, password_hash, role) VALUES
-('Administrator', 'admin@quizsystem.local', '$2y$10$YJ5qHDLsE5HkNp1V5e5Yv.ZrQJ5mYp0VxhRfQx8yW1LhVz5bO5MXe', 'admin');
+-- Admin accounts are not seeded with default passwords.
+-- Run setup.php via browser to set up your administrator account securely.
+
 
 -- Categories
 INSERT INTO categories (category_name) VALUES

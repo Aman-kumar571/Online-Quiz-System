@@ -3,13 +3,12 @@
  * Admin: list and delete categories.
  */
 
+require_once __DIR__ . '/../includes/config.php';
+require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/helpers.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
-$pageTitle     = 'Manage Categories';
-$canonicalPath = '/admin/categories.php';
-
-require __DIR__ . '/../includes/header.php';
 requireAdmin();
 
 $db = getDB();
@@ -44,6 +43,11 @@ $categories = $db->query(
      FROM categories c
      ORDER BY c.category_name'
 )->fetchAll();
+
+$pageTitle     = 'Manage Categories';
+$canonicalPath = '/admin/categories.php';
+
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
